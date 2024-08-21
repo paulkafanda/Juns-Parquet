@@ -15,6 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('post_nom')->nullable();
+            $table->string('prenom')->nullable();
+            $table->string('tel')->nullable();
+            $table->string('sexe')->nullable();
+            $table->string('adresse')->nullable();
+            $table->string('role')->default('MAGISTRAT');
+
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
