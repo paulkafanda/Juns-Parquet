@@ -16,7 +16,10 @@ return new class extends Migration
         Schema::create('plaintes', function (Blueprint $table) {
             $table->id();
             $table->string('motif');
-            $table->foreignId('dossier_id')->constrained();
+            $table->foreignId('magistrat')->nullable()->constrained('users');
+            $table->foreignId('plaignant')->constrained('parties');
+            $table->foreignId('accusee')->constrained('parties');
+
             $table->timestamps();
         });
 

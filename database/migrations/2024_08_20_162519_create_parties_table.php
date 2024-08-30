@@ -15,14 +15,13 @@ return new class extends Migration
 
         Schema::create('parties', function (Blueprint $table) {
             $table->id();
-            $table->string('role');
             $table->string('nom');
-            $table->string('post_nom');
-            $table->string('prenom');
-            $table->string('adresse');
-            $table->string('sexe');
-            $table->string('tel');
-            $table->string('origine');
+            $table->string('post_nom')->nullable();
+            $table->string('prenom')->nullable();
+            $table->string('adresse')->nullable();
+            $table->string('sexe')->nullable();
+            $table->string('tel')->nullable();
+            $table->string('origine')->nullable();
             $table->timestamps();
         });
 
