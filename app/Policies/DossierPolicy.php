@@ -6,11 +6,14 @@ use App\Models\User;
 
 class DossierPolicy
 {
-    /**
-     * Create a new policy instance.
-     */
-    public function __construct()
+    public function viewAny(User $user): bool
+
     {
-        //
+        return true;
+    }
+
+    public function create(User $user): bool
+    {
+        return $user->isMagistrat();
     }
 }
