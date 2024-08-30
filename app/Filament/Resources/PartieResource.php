@@ -22,25 +22,7 @@ class PartieResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('role')
-                    ->required(),
-                Forms\Components\TextInput::make('nom')
-                    ->required(),
-                Forms\Components\TextInput::make('post_nom')
-                    ->required(),
-                Forms\Components\TextInput::make('prenom')
-                    ->required(),
-                Forms\Components\TextInput::make('adresse')
-                    ->required(),
-                Forms\Components\TextInput::make('sexe')
-                    ->required(),
-                Forms\Components\TextInput::make('tel')
-                    ->tel()
-                    ->required(),
-                Forms\Components\TextInput::make('origine')
-                    ->required(),
-            ]);
+            ->schema(Partie::getForm());
     }
 
     public static function table(Table $table): Table
