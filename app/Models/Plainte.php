@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Plainte extends Model
 {
@@ -17,7 +20,6 @@ class Plainte extends Model
      */
     protected $fillable = [
         'motif',
-        'dossier_id',
     ];
 
     /**
@@ -27,11 +29,41 @@ class Plainte extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'dossier_id' => 'integer',
     ];
 
-    public function dossier(): BelongsTo
+    public function plaignant(): HasOne
     {
-        return $this->belongsTo(Dossier::class);
+        return $this->hasOne(Partie::class, 'id');
+    }
+
+    public function accusee(): HasOne
+    {
+        return $this->hasOne(Partie::class, 'id');
+    }
+
+    public function magistrat(): HasOne
+    {
+        return $this->hasOne(User::class, 'id');
+    }
+
+    /**
+     * @return array
+     */
+    public static function getForm(): array
+    {
+        return [
+            TextInput::make('motif')
+                ->required(),
+            Select::make('plaignant')
+                ->relationship('plaignant', 'nom')
+                ->createOptionForm(Partie::getForm())
+                ->required(),
+            Select::make('accusee')
+                ->relationship('accusee', 'nom')
+                ->createOptionForm(Partie::getForm())
+                ->required(),
+            Select::make('magistrat')
+                ->relationship('magistrat', 'name'),
+        ];
     }
 }

@@ -22,8 +22,10 @@ class PlainteFactory extends Factory
     public function definition(): array
     {
         return [
-            'motif' => $this->faker->word(),
-            'dossier_id' => Dossier::factory(),
+            'motif' => $this->faker->sentence(),
+            'user_id' => UserFactory::class,
+            'plaignat' => PartieFactory::class,
+            'accusee' => PartieFactory::class,
         ];
     }
 }
