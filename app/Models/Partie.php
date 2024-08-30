@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,4 +34,28 @@ class Partie extends Model
     protected $casts = [
         'id' => 'integer',
     ];
+
+    /**
+     * @return array
+     */
+    public static function getForm(): array
+    {
+        return [
+            TextInput::make('nom')
+                ->required(),
+            TextInput::make('post_nom')
+                ->required(),
+            TextInput::make('prenom')
+                ->required(),
+            TextInput::make('adresse')
+                ->required(),
+            TextInput::make('sexe')
+                ->required(),
+            TextInput::make('tel')
+                ->tel()
+                ->required(),
+            TextInput::make('origine')
+                ->required(),
+        ];
+    }
 }
