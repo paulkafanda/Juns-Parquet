@@ -14,21 +14,15 @@ class Plainte extends Model
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'motif',
-    ];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [
         'id' => 'integer',
+        'magique' => 'integer',
+        'plaignant' => 'integer',
+        'accusee' => 'integer',
     ];
 
     public function plaignant(): HasOne
@@ -41,9 +35,9 @@ class Plainte extends Model
         return $this->hasOne(Partie::class, 'id');
     }
 
-    public function magistrat(): HasOne
+    public function magistrat(): ?BelongsTo
     {
-        return $this->hasOne(User::class, 'id');
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -54,16 +48,18 @@ class Plainte extends Model
         return [
             TextInput::make('motif')
                 ->required(),
-            Select::make('plaignant')
+            Select::make('plaignant_id')
                 ->relationship('plaignant', 'nom')
                 ->createOptionForm(Partie::getForm())
                 ->required(),
-            Select::make('accusee')
+            Select::make('accusee_id')
                 ->relationship('accusee', 'nom')
                 ->createOptionForm(Partie::getForm())
                 ->required(),
-            Select::make('magistrat')
-                ->relationship('magistrat', 'name'),
+            Select::make('magistrat_id')
+                ->relationship('magistrat', 'name')
+                ->visible(auth()->user()->isChefOffice())
+            ->nullable(),
         ];
     }
 }

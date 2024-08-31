@@ -7,6 +7,7 @@ use App\Filament\Resources\PlainteResource\Pages;
 use App\Filament\Resources\PlainteResource\RelationManagers;
 use App\Models\Partie;
 use App\Models\Plainte;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -38,6 +39,7 @@ class PlainteResource extends Resource
                 Tables\Columns\TextColumn::make('accusee.nom')
                 ->searchable(),
                 Tables\Columns\TextColumn::make('magistrat.name')
+                    ->default('')
                 ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

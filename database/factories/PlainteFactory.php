@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Partie;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\Dossier;
@@ -23,9 +25,9 @@ class PlainteFactory extends Factory
     {
         return [
             'motif' => $this->faker->sentence(),
-            'user_id' => UserFactory::class,
-            'plaignat' => PartieFactory::class,
-            'accusee' => PartieFactory::class,
+            'magistrat_id' => User::factory(),
+            'plaignant_id' => Partie::factory(),
+            'accusee_id' => Partie::factory(),
         ];
     }
 }
