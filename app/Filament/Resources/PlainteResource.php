@@ -2,19 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Clusters\DossierCluster;
 use App\Filament\Resources\PlainteResource\Pages;
 use App\Filament\Resources\PlainteResource\RelationManagers;
-use App\Models\Partie;
 use App\Models\Plainte;
-use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use phpDocumentor\Reflection\Types\This;
 
 class PlainteResource extends Resource
 {
@@ -24,8 +19,9 @@ class PlainteResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $isEditing = $form->getRecord()->exists && auth()->user()->isChefOffice();
         return $form
-            ->schema(Plainte::getForm());
+            ->schema(Plainte::getForm($isEditing));
     }
 
     public static function table(Table $table): Table
@@ -81,6 +77,11 @@ class PlainteResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return Plainte::count();
+        return Plainte::where('magistrat_id', null)->count();
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'danger';
     }
 }
