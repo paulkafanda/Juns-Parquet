@@ -19,7 +19,7 @@ class JugementResource extends Resource
     protected static ?string $cluster = DossierCluster::class;
     protected static ?string $model = Jugement::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-scale';
 
     public static function form(Form $form): Form
     {

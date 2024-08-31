@@ -6,6 +6,7 @@ use App\Filament\Clusters\DossierCluster;
 use App\Filament\Resources\DossierResource\Pages;
 use App\Filament\Resources\DossierResource\RelationManagers;
 use App\Models\Dossier;
+use App\Models\Partie;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
