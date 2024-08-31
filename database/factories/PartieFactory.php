@@ -21,14 +21,13 @@ class PartieFactory extends Factory
     public function definition(): array
     {
         return [
-            'role' => $this->faker->word(),
-            'nom' => $this->faker->word(),
-            'post_nom' => $this->faker->word(),
-            'prenom' => $this->faker->word(),
-            'adresse' => $this->faker->word(),
-            'sexe' => $this->faker->word(),
-            'tel' => $this->faker->word(),
-            'origine' => $this->faker->word(),
+            'nom' => $this->faker->firstName(),
+            'post_nom' => $this->faker->lastName(),
+            'prenom' => $this->faker->name(),
+            'adresse' => $this->faker->streetAddress(),
+            'sexe' => $this->faker->randomElement(['M','F', 'O']),
+            'tel' => $this->faker->phoneNumber(),
+            'origine' => $this->faker->address(),
         ];
     }
 }
