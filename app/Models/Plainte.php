@@ -41,21 +41,25 @@ class Plainte extends Model
     }
 
     /**
+     * @param $isEditing bool
      * @return array
      */
-    public static function getForm(): array
+    public static function getForm(bool $isEditing = false): array
     {
         return [
             TextInput::make('motif')
-                ->required(),
+                ->required()
+            ->disabled($isEditing),
             Select::make('plaignant_id')
                 ->relationship('plaignant', 'nom')
                 ->createOptionForm(Partie::getForm())
-                ->required(),
+                ->required()
+            ->disabled($isEditing),
             Select::make('accusee_id')
                 ->relationship('accusee', 'nom')
                 ->createOptionForm(Partie::getForm())
-                ->required(),
+                ->required()
+            ->disabled($isEditing),
             Select::make('magistrat_id')
                 ->relationship('magistrat', 'name')
                 ->visible(auth()->user()->isChefOffice())
