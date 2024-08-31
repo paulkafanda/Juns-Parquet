@@ -77,4 +77,8 @@ class PlainteResource extends Resource
         ];
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        return Plainte::count();
+    }
 }
