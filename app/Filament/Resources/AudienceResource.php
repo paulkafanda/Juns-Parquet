@@ -19,7 +19,7 @@ class AudienceResource extends Resource
     protected static ?string $cluster = DossierCluster::class;
     protected static ?string $model = Audience::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
     public static function form(Form $form): Form
     {

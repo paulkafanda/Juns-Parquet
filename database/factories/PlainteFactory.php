@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Partie;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\Dossier;
@@ -22,8 +24,10 @@ class PlainteFactory extends Factory
     public function definition(): array
     {
         return [
-            'motif' => $this->faker->word(),
-            'dossier_id' => Dossier::factory(),
+            'motif' => $this->faker->sentence(),
+            'magistrat_id' => User::factory(),
+            'plaignant_id' => Partie::factory(),
+            'accusee_id' => Partie::factory(),
         ];
     }
 }

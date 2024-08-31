@@ -19,7 +19,7 @@ class PieceResource extends Resource
     protected static ?string $cluster = DossierCluster::class;
     protected static ?string $model = Piece::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-paper-clip';
 
     public static function form(Form $form): Form
     {

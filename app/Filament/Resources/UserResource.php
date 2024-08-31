@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PartieResource\Pages;
-use App\Filament\Resources\PartieResource\RelationManagers;
-use App\Models\Partie;
+use App\Enums\UserRole;
+use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,38 +14,41 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PartieResource extends Resource
+class UserResource extends Resource
 {
-    protected static ?string $model = Partie::class;
+    protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(Partie::getForm());
+            ->schema(User::getForm());
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('role')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('nom')
+                Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('post_nom')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('prenom')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('adresse')
+                Tables\Columns\TextColumn::make('tel')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('sexe')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('tel')
+                Tables\Columns\TextColumn::make('adresse')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('origine')
+                Tables\Columns\TextColumn::make('role')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('email_verified_at')
+                    ->dateTime()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -77,9 +81,10 @@ class PartieResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListParties::route('/'),
-            'create' => Pages\CreatePartie::route('/create'),
-            'edit' => Pages\EditPartie::route('/{record}/edit'),
+            'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
+
 }

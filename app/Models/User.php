@@ -3,7 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserRole;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -42,6 +47,64 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role' => UserRole::class,
+        ];
+    }
+
+    public function plaintes(): HasMany
+    {
+        return $this->hasMany(Plainte::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === UserRole::ADMIN;
+    }
+
+    public function isMagistrat(): bool
+    {
+        return $this->role === UserRole::MAGISTRAT;
+    }
+
+    public function isSecretaire(): bool
+    {
+        return $this->role === UserRole::SECRETAIRE;
+    }
+
+    public function isChefOffice(): bool
+    {
+        return $this->role === UserRole::CHEF_OFFICE;
+    }
+
+    public function isJuge(): bool
+    {
+        return $this->role === UserRole::JUGE;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getForm(): array
+    {
+        return [
+            TextInput::make('name')
+                ->required(),
+            TextInput::make('email')
+                ->email()
+                ->required(),
+            TextInput::make('post_nom'),
+            TextInput::make('prenom'),
+            TextInput::make('tel')
+                ->tel(),
+            TextInput::make('sexe'),
+            TextInput::make('adresse'),
+            Select::make('role')
+                ->enum(UserRole::class)
+                ->options(UserRole::class),
+            DateTimePicker::make('email_verified_at'),
+            TextInput::make('password')
+                ->password()
+                ->required(),
         ];
     }
 }
