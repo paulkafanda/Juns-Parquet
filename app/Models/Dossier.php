@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Dossier extends Model
 {
@@ -36,8 +38,8 @@ class Dossier extends Model
         'partie_id' => 'integer',
     ];
 
-    public function partie(): BelongsTo
+    public function plainte(): HasOne
     {
-        return $this->belongsTo(Partie::class);
+        return $this->hasOne(Plainte::class);
     }
 }
