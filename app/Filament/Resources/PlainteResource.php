@@ -19,7 +19,7 @@ class PlainteResource extends Resource
 {
     protected static ?string $model = Plainte::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-exclamation-circle';
 
     public static function form(Form $form): Form
     {
@@ -33,9 +33,11 @@ class PlainteResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('motif')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('plaignant.prenom')
+                Tables\Columns\TextColumn::make('plaignant.nom')
                 ->searchable(),
-                Tables\Columns\TextColumn::make('accusee.prenom')
+                Tables\Columns\TextColumn::make('accusee.nom')
+                ->searchable(),
+                Tables\Columns\TextColumn::make('magistrat.name')
                 ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
