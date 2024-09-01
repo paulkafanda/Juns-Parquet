@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Plainte;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,11 +16,11 @@ return new class extends Migration
 
         Schema::create('dossiers', function (Blueprint $table) {
             $table->id();
-            $table->date('date_ouverture');
-            $table->string('suite_reservee');
-            $table->date('date_fixation');
-            $table->date('data_classement');
-            $table->foreignId('partie_id')->constrained('parties');
+            $table->date('date_ouverture')->default(now());
+            $table->string('suite_reservee')->nullable();
+            $table->date('date_fixation')->nullable();
+            $table->date('date_classement')->nullable();
+            $table->foreignIdFor(Plainte::class)->constrained();
             $table->timestamps();
         });
 
