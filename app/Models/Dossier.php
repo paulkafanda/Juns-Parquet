@@ -38,8 +38,8 @@ class Dossier extends Model
         'partie_id' => 'integer',
     ];
 
-    public function plainte(): HasOne
+    public function plainte(): BelongsTo
     {
-        return $this->hasOne(Plainte::class);
+        return $this->belongsTo(Plainte::class);
     }
 }
