@@ -18,7 +18,7 @@ class DossierResource extends Resource
     protected static ?string $cluster = DossierCluster::class;
     protected static ?string $model = Dossier::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-folder-open';
 
     public static function form(Form $form): Form
     {

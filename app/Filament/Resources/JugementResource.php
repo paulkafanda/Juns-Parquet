@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\JugementState;
 use App\Filament\Clusters\DossierCluster;
 use App\Filament\Resources\JugementResource\Pages;
 use App\Filament\Resources\JugementResource\RelationManagers;
@@ -25,16 +26,18 @@ class JugementResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('dossier_id')
+                    ->relationship('dossier', 'nom')
+                    ->required(),
                 Forms\Components\DateTimePicker::make('date')
                     ->required(),
                 Forms\Components\TextInput::make('description')
                     ->required(),
-                Forms\Components\TextInput::make('statut')
+                Forms\Components\Select::make('statut')
+                    ->enum(JugementState::class)
+                    ->options(JugementState::class)
                     ->required(),
                 Forms\Components\TextInput::make('decision')
-                    ->required(),
-                Forms\Components\Select::make('dossier_id')
-                    ->relationship('dossier', 'id')
                     ->required(),
             ]);
     }
