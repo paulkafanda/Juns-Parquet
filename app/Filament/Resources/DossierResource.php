@@ -6,36 +6,36 @@ use App\Filament\Clusters\DossierCluster;
 use App\Filament\Resources\DossierResource\Pages;
 use App\Filament\Resources\DossierResource\RelationManagers;
 use App\Models\Dossier;
-use App\Models\Partie;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class DossierResource extends Resource
 {
     protected static ?string $cluster = DossierCluster::class;
     protected static ?string $model = Dossier::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-folder-open';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\DatePicker::make('date_ouverture')
+                    ->default(now())
+                    ->hidden()
                     ->required(),
-                Forms\Components\TextInput::make('suite_reservee')
-                    ->required(),
+                Forms\Components\Textarea::make('suite_reservee')
+                    ->nullable(),
                 Forms\Components\DatePicker::make('date_fixation')
-                    ->required(),
-                Forms\Components\DatePicker::make('data_classement')
-                    ->required(),
-                Forms\Components\Select::make('partie_id')
-                    ->relationship('partie', 'id')
+                    ->nullable(),
+                Forms\Components\DatePicker::make('date_classement')
+                    ->nullable(),
+                Forms\Components\Select::make('plainte_id')
+                    ->relationship('plainte', 'motif')
                     ->required(),
             ]);
     }
@@ -44,20 +44,9 @@ class DossierResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('date_ouverture')
-                    ->date()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('plainte.motif'),
                 Tables\Columns\TextColumn::make('suite_reservee')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('date_fixation')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('data_classement')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('partie.id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -71,7 +60,24 @@ class DossierResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('Fixer dossier')
+                ->action(function(Dossier $dossier) {
+                    $dossier->date_fixation = now();
+                    $dossier->save();
+                })
+                ->color('success')
+                ->tooltip("Fixer le dosser(Definit la date de fixation)"),
+                Tables\Actions\Action::make('Classer dossier')
+                ->action(function(Dossier $dossier) {
+                    $dossier->date_classement = now();
+                    $dossier->save();
+                })
+                ->color('info')
+                ->tooltip("Classer le dosser(Definit la date de classement)"),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -94,5 +100,14 @@ class DossierResource extends Resource
             'create' => Pages\CreateDossier::route('/create'),
             'edit' => Pages\EditDossier::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query =  parent::getEloquentQuery();
+        return match (auth()->user()->isMagistrat()) {
+            true => $query->whereRelation('plainte', 'magistrat_id', '=' ,auth()->id()),
+            default => $query
+        };
     }
 }

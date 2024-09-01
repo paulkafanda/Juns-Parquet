@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\AudienceState;
 use App\Filament\Clusters\DossierCluster;
 use App\Filament\Resources\AudienceResource\Pages;
 use App\Filament\Resources\AudienceResource\RelationManagers;
@@ -25,17 +26,16 @@ class AudienceResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('dossier_id')
+                    ->relationship('dossier', 'nom')
+                    ->required(),
                 Forms\Components\DateTimePicker::make('date')
                     ->required(),
                 Forms\Components\TextInput::make('lieu')
                     ->required(),
-                Forms\Components\TextInput::make('statut')
-                    ->required(),
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
-                Forms\Components\Select::make('dossier_id')
-                    ->relationship('dossier', 'id')
+                Forms\Components\Select::make('statut')
+                    ->enum(AudienceState::class)
+                    ->options(AudienceState::class)
                     ->required(),
             ]);
     }
@@ -51,10 +51,7 @@ class AudienceResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('statut')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('user.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('dossier.id')
+                Tables\Columns\TextColumn::make('dossier.nom')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -93,5 +90,15 @@ class AudienceResource extends Resource
             'create' => Pages\CreateAudience::route('/create'),
             'edit' => Pages\EditAudience::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return Audience::where('date', '>=', now())->count();
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'info';
     }
 }

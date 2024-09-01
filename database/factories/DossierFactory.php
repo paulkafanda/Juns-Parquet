@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Plainte;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\Dossier;
@@ -22,11 +23,12 @@ class DossierFactory extends Factory
     public function definition(): array
     {
         return [
+            'nom' => $this->faker->title(),
             'date_ouverture' => $this->faker->date(),
-            'suite_reservee' => $this->faker->word(),
+            'suite_reservee' => $this->faker->sentence(),
             'date_fixation' => $this->faker->date(),
-            'data_classement' => $this->faker->date(),
-            'partie_id' => Partie::factory(),
+            'date_classement' => $this->faker->date(),
+            'plainte_id' => Plainte::factory(),
         ];
     }
 }

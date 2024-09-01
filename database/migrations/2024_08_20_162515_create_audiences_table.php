@@ -18,7 +18,6 @@ return new class extends Migration
             $table->dateTime('date');
             $table->string('lieu');
             $table->string('statut');
-            $table->foreignId('user_id')->constrained();
             $table->foreignId('dossier_id')->constrained();
             $table->timestamps();
         });

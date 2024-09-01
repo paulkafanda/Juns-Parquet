@@ -3,8 +3,11 @@
 namespace App\Filament\Resources\DossierResource\Pages;
 
 use App\Filament\Resources\DossierResource;
+use App\Models\Dossier;
 use Filament\Actions;
+use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Database\Eloquent\Builder;
 
 class ListDossiers extends ListRecords
 {
@@ -13,7 +16,27 @@ class ListDossiers extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->label('Creer un  nouveau dossier'),
+        ];
+    }
+
+    public function getTabs(): array
+    {
+        $unfixed_folder = Dossier::whereNull('date_fixation')->count();
+        $unclassed_folder = Dossier::whereNull('date_classement')->count();
+
+        return [
+            'Tout les dossiers' => Tab::make()
+            ->badge(Dossier::count()),
+            'Non fixes' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereNull('date_fixation'))
+            ->badge($unfixed_folder)
+            ->badgeColor('warning'),
+            'Non classes' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereNull('date_classement'))
+            ->badge($unclassed_folder)
+            ->badgeColor('warning'),
         ];
     }
 }

@@ -40,6 +40,10 @@ class Plainte extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function dossier(): HasOne
+    {
+        return $this->hasOne(Dossier::class);
+    }
     /**
      * @param $isEditing bool
      * @return array
