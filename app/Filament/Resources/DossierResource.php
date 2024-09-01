@@ -30,7 +30,8 @@ class DossierResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('nom')
                     ->required(),
-                Forms\Components\Textarea::make('suite_reservee')
+                Forms\Components\TextInput::make('suite_reservee')
+                    ->default('EN COURS')
                     ->nullable(),
                 Forms\Components\DatePicker::make('date_fixation')
                     ->nullable(),
@@ -104,12 +105,12 @@ class DossierResource extends Resource
         ];
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        $query =  parent::getEloquentQuery();
-        return match (auth()->user()->isMagistrat()) {
-            true => $query->whereRelation('plainte', 'magistrat_id', '=' ,auth()->id()),
-            default => $query
-        };
-    }
+//    public static function getEloquentQuery(): Builder
+//    {
+//        $query =  parent::getEloquentQuery();
+//        return match (auth()->user()->isMagistrat()) {
+//            true => $query->whereRelation('plainte', 'magistrat_id', '=' ,auth()->id()),
+//            default => $query
+//        };
+//    }
 }

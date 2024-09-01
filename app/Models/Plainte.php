@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserRole;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -65,7 +66,9 @@ class Plainte extends Model
                 ->required()
             ->disabled($isEditing),
             Select::make('magistrat_id')
-                ->relationship('magistrat', 'name')
+                ->relationship('magistrat', 'name', function($query) {
+                    $query->where('role', UserRole::MAGISTRAT);
+                })
                 ->visible(auth()->user()->isChefOffice())
             ->nullable(),
         ];
