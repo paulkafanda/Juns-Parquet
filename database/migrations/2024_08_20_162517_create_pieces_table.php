@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('type');
             $table->date('date');
             $table->string('description');
+            $table->string('path');
             $table->foreignId('dossier_id')->constrained();
             $table->timestamps();
         });

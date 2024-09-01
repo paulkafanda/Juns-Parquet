@@ -16,6 +16,7 @@ return new class extends Migration
 
         Schema::create('dossiers', function (Blueprint $table) {
             $table->id();
+            $table->string('nom');
             $table->date('date_ouverture')->default(now());
             $table->string('suite_reservee')->nullable();
             $table->date('date_fixation')->nullable();
