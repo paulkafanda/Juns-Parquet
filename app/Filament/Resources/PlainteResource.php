@@ -35,7 +35,7 @@ class PlainteResource extends Resource
                 Tables\Columns\TextColumn::make('accusee.nom')
                 ->searchable(),
                 Tables\Columns\TextColumn::make('magistrat.name')
-                    ->default('')
+                    ->hidden(auth()->user()->isSecretaire())
                 ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

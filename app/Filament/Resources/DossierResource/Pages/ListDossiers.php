@@ -29,12 +29,12 @@ class ListDossiers extends ListRecords
         return [
             'Tout les dossiers' => Tab::make()
             ->badge(Dossier::count()),
-            'Non fixes' => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereNull('date_fixation'))
+            'Fixes' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('date_fixation'))
             ->badge($unfixed_folder)
             ->badgeColor('warning'),
-            'Non classes' => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereNull('date_classement'))
+            'Classes' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('date_classement'))
             ->badge($unclassed_folder)
             ->badgeColor('warning'),
         ];
