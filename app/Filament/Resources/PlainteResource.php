@@ -19,7 +19,7 @@ class PlainteResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $isEditing = $form->getRecord()->exists && auth()->user()->isChefOffice();
+        $isEditing = $form->getRecord()?->exists && auth()->user()->isChefOffice();
         return $form
             ->schema(Plainte::getForm($isEditing));
     }
