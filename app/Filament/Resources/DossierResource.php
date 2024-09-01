@@ -28,6 +28,8 @@ class DossierResource extends Resource
                     ->default(now())
                     ->hidden()
                     ->required(),
+                Forms\Components\TextInput::make('nom')
+                    ->required(),
                 Forms\Components\Textarea::make('suite_reservee')
                     ->nullable(),
                 Forms\Components\DatePicker::make('date_fixation')
