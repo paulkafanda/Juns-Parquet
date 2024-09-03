@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\FolderState;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,6 +37,7 @@ class Dossier extends Model
         'date_fixation' => 'date',
         'data_classement' => 'date',
         'partie_id' => 'integer',
+        'suite_reservee' => FolderState::class,
     ];
 
     public function plainte(): BelongsTo

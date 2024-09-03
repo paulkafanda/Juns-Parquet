@@ -24,17 +24,7 @@ class PieceResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('type')
-                    ->required(),
-                Forms\Components\DatePicker::make('date')
-                    ->required(),
-                Forms\Components\TextInput::make('description')
-                    ->required(),
-                Forms\Components\Select::make('dossier_id')
-                    ->relationship('dossier', 'id')
-                    ->required(),
-            ]);
+            ->schema(Piece::getForm());
     }
 
     public static function table(Table $table): Table
@@ -48,7 +38,7 @@ class PieceResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('dossier.id')
+                Tables\Columns\TextColumn::make('dossier.nom')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -68,7 +58,8 @@ class PieceResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                    ->visible(auth()->check()),
                 ]),
             ]);
     }
