@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\DossierResource\Pages;
 
+use App\Enums\FolderState;
+use App\Enums\UserRole;
 use App\Filament\Resources\DossierResource;
 use App\Models\Dossier;
 use Filament\Actions;
@@ -23,20 +25,40 @@ class ListDossiers extends ListRecords
 
     public function getTabs(): array
     {
-        $unfixed_folder = Dossier::whereNull('date_fixation')->count();
-        $unclassed_folder = Dossier::whereNull('date_classement')->count();
+        $user = auth()->user();
 
-        return [
-            'Tout les dossiers' => Tab::make()
-            ->badge(Dossier::count()),
-            'Fixes' => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('date_fixation'))
-            ->badge($unfixed_folder)
-            ->badgeColor('warning'),
-            'Classes' => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('date_classement'))
-            ->badge($unclassed_folder)
-            ->badgeColor('warning'),
-        ];
+        $unfixed_folder = match ($user->role) {
+            UserRole::MAGISTRAT => Dossier::where('suite_reservee', '=', FolderState::EN_COURS)
+                ->whereRelation('plainte', 'magistrat_id', $user->id)
+                ->count(),
+            default => Dossier::whereSuiteReservee(FolderState::FIXE)->count(),
+        };
+        $unclassed_folder = match ($user->role) {
+            UserRole::MAGISTRAT => Dossier::whereNot('suite_reservee', '=', FolderState::CLASSE)
+                ->whereRelation('plainte', 'magistrat_id', $user->id)
+                ->count(),
+            default => Dossier::whereSuiteReservee(FolderState::CLASSE)->count()
+        };
+
+        return match ($user->role) {
+            UserRole::MAGISTRAT =>
+            [
+                'Tout les dossiers' => Tab::make()
+                    ->badge(Dossier::whereRelation('plainte', 'magistrat_id', $user->id)->count()),
+                'Non Fixes' => Tab::make()
+                    ->modifyQueryUsing(fn(Builder $query) => $query
+                        ->where('suite_reservee', '=', FolderState::EN_COURS)
+                        ->whereRelation('plainte', 'magistrat_id', $user->id)
+                    )
+                    ->badge($unfixed_folder)
+                    ->badgeColor('warning'),
+                'Non Classes' => Tab::make()
+                    ->modifyQueryUsing(fn(Builder $query) => $query
+                        ->whereNot('suite_reservee', '=', FolderState::CLASSE))
+                    ->badge($unclassed_folder)
+                    ->badgeColor('warning'),
+            ],
+            default => []
+        };
     }
 }

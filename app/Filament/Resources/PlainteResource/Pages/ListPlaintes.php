@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PlainteResource\Pages;
 
+use App\Enums\UserRole;
 use App\Filament\Resources\PlainteResource;
 use App\Models\Plainte;
 use Filament\Actions;
@@ -23,12 +24,16 @@ class ListPlaintes extends ListRecords
 
     public function getTabs(): array
     {
-        return [
-            'Toutes les plaintes' => Tab::make(),
-            'Non Attribuees' => Tab::make()
-            ->modifyQueryUsing(fn(Builder $query) => $query->whereDoesntHave('magistrat'))
-            ->badge(Plainte::whereDoesntHave('magistrat')->count())
-            ->badgeColor('danger'),
-        ];
+        return match (auth()->user()->role) {
+            UserRole::CHEF_OFFICE => [
+                'Toutes les plaintes' => Tab::make(),
+                'Non Attribuees' => Tab::make()
+                    ->modifyQueryUsing(fn(Builder $query) => $query->whereDoesntHave('magistrat'))
+                    ->badge(Plainte::whereDoesntHave('magistrat')->count())
+                    ->badgeColor('danger'),
+            ],
+            default => []
+
+        };
     }
 }
