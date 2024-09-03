@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PartieGender;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -44,18 +45,20 @@ class Partie extends Model
             TextInput::make('nom')
                 ->required(),
             TextInput::make('post_nom')
-                ->required(),
+                ->nullable(),
             TextInput::make('prenom')
-                ->required(),
+                ->nullable(),
             TextInput::make('adresse')
-                ->required(),
-            TextInput::make('sexe')
+                ->nullable(),
+            TextInput::select('sexe')
+                ->enum(PartieGender::class)
+                ->options(PartieGender::class)
                 ->required(),
             TextInput::make('tel')
                 ->tel()
-                ->required(),
+                ->nullable(),
             TextInput::make('origine')
-                ->required(),
+                ->nullable(),
         ];
     }
 }
