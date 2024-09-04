@@ -29,21 +29,24 @@ class PartieResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('role')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('nom')
+                    ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('post_nom')
+                    ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('prenom')
+                    ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('adresse')
+                    ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('sexe')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tel')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('origine')
+                    ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

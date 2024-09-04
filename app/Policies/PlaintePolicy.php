@@ -8,7 +8,7 @@ class PlaintePolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->isAdmin() || $user->isChefOffice();
+        return $user->isAdmin() || $user->isChefOffice() || $user->isSecretaire();
     }
     public function create(User $user): bool
     {

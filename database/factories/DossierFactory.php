@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\FolderState;
 use App\Models\Plainte;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -25,7 +26,7 @@ class DossierFactory extends Factory
         return [
             'nom' => $this->faker->title(),
             'date_ouverture' => $this->faker->date(),
-            'suite_reservee' => $this->faker->sentence(),
+            'suite_reservee' => $this->faker->randomElement(FolderState::class),
             'date_fixation' => $this->faker->date(),
             'date_classement' => $this->faker->date(),
             'plainte_id' => Plainte::factory(),
