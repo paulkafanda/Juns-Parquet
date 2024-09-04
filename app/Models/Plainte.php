@@ -26,14 +26,14 @@ class Plainte extends Model
         'accusee' => 'integer',
     ];
 
-    public function plaignant(): HasOne
+    public function plaignant(): BelongsTo
     {
-        return $this->hasOne(Partie::class, 'id');
+        return $this->belongsTo(Partie::class);
     }
 
-    public function accusee(): HasOne
+    public function accusee(): BelongsTo
     {
-        return $this->hasOne(Partie::class, 'id');
+        return $this->belongsTo(Partie::class);
     }
 
     public function magistrat(): ?BelongsTo

@@ -30,9 +30,9 @@ class PlainteResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('motif')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('plaignant.nom')
+                Tables\Columns\TextColumn::make('plaignant.prenom')
                 ->searchable(),
-                Tables\Columns\TextColumn::make('accusee.nom')
+                Tables\Columns\TextColumn::make('accusee.prenom')
                 ->searchable(),
                 Tables\Columns\TextColumn::make('magistrat.name')
                     ->hidden(auth()->user()->isSecretaire())
