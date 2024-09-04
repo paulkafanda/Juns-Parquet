@@ -10,6 +10,6 @@ class DossierCluster extends Cluster
 
     public static function canAccess(): bool
     {
-        return ! (auth()->user()->isSecretaire());
+        return ! (auth()->user()->isSecretaire() || auth()->user()->isChefOffice());
     }
 }
