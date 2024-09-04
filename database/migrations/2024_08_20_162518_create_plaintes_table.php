@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('motif');
 
-            $table->foreignIdFor(\App\Models\User::class, 'magistrat_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\User::class, 'magistrat_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignIdFor(\App\Models\Partie::class, 'plaignant_id')->constrained('parties')->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Partie::class, 'accusee_id')->constrained('parties')->cascadeOnDelete();
 
