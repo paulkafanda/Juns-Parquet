@@ -4,7 +4,7 @@ namespace App\Enums;
 
 enum AudienceState : string
 {
-    case CONCLUE = 'CONCLUE';
-    case RENVOYE = 'RENVOYE';
-
+    case CONCLUE = 'conclue';
+    case RENVOYE = 'renvoyee';
+    case PROGRAMMEE = 'programmee';
 }

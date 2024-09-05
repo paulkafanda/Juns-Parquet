@@ -48,7 +48,8 @@ class ViewDossier extends ViewRecord
         return [
             Actions\EditAction::make('Editez le dossier')
             ->form(Dossier::getForm())
-            ->modal(),
+            ->modal()
+            ->visible(auth()->user()->isMagistrat()),
         ];
     }
 

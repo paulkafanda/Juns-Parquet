@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\AudienceState;
+use App\Enums\FolderState;
 use App\Filament\Clusters\DossierCluster;
 use App\Filament\Resources\AudienceResource\Pages;
 use App\Filament\Resources\AudienceResource\RelationManagers;
@@ -27,15 +28,17 @@ class AudienceResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('dossier_id')
-                    ->relationship('dossier', 'nom')
+                    ->relationship('dossier', 'nom', fn($query) => $query->where('suite_reservee', FolderState::FIXE))
                     ->required(),
                 Forms\Components\DateTimePicker::make('date')
+                    ->default(now()->addWeeks(2))
                     ->required(),
                 Forms\Components\TextInput::make('lieu')
                     ->required(),
                 Forms\Components\Select::make('statut')
                     ->enum(AudienceState::class)
                     ->options(AudienceState::class)
+                    ->default(AudienceState::PROGRAMMEE)
                     ->required(),
             ]);
     }
@@ -50,6 +53,16 @@ class AudienceResource extends Resource
                 Tables\Columns\TextColumn::make('lieu')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('statut')
+                    ->icon(fn($state) => match($state) {
+                        AudienceState::CONCLUE => 'heroicon-o-check-circle',
+                        AudienceState::RENVOYE => 'heroicon-o-arrow-right-circle',
+                        default => 'heroicon-o-calendar',
+                    })
+                    ->iconColor(fn($state) => match ($state) {
+                        AudienceState::CONCLUE => 'success',
+                        AudienceState::RENVOYE => 'warning',
+                        default => 'info',
+                    })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('dossier.nom')
                     ->numeric()
