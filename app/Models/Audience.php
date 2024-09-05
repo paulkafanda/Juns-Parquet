@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\AudienceState;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,6 +34,7 @@ class Audience extends Model
         'date' => 'datetime',
         'user_id' => 'integer',
         'dossier_id' => 'integer',
+        'statut' => AudienceState::class
     ];
 
     public function user(): BelongsTo

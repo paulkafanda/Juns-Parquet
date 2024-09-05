@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('jugements', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date');
-            $table->string('description');
+            $table->string('jugement');
             $table->string('statut');
             $table->string('decision');
             $table->foreignId('dossier_id')->constrained();

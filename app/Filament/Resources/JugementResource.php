@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\DecisionState;
 use App\Enums\JugementState;
 use App\Filament\Clusters\DossierCluster;
 use App\Filament\Resources\JugementResource\Pages;
@@ -31,13 +32,15 @@ class JugementResource extends Resource
                     ->required(),
                 Forms\Components\DateTimePicker::make('date')
                     ->required(),
-                Forms\Components\TextInput::make('description')
+                Forms\Components\TextInput::make('jugement')
                     ->required(),
                 Forms\Components\Select::make('statut')
                     ->enum(JugementState::class)
                     ->options(JugementState::class)
                     ->required(),
-                Forms\Components\TextInput::make('decision')
+                Forms\Components\Select::make('decision')
+                    ->enum(DecisionState::class)
+                    ->options(DecisionState::class)
                     ->required(),
             ]);
     }
@@ -49,13 +52,13 @@ class JugementResource extends Resource
                 Tables\Columns\TextColumn::make('date')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('description')
+                Tables\Columns\TextColumn::make('jugement')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('statut')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('decision')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('dossier.id')
+                Tables\Columns\TextColumn::make('dossier.nom')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
