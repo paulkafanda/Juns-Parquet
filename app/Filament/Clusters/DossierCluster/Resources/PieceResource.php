@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Clusters\DossierCluster\Resources;
 
 use App\Filament\Clusters\DossierCluster;
 use App\Filament\Resources\PieceResource\Pages;
 use App\Filament\Resources\PieceResource\RelationManagers;
 use App\Models\Piece;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PieceResource extends Resource
 {
@@ -74,9 +71,9 @@ class PieceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPieces::route('/'),
-            'create' => Pages\CreatePiece::route('/create'),
-            'edit' => Pages\EditPiece::route('/{record}/edit'),
+            'index' => PieceResource\Pages\ListPieces::route('/'),
+            'create' => PieceResource\Pages\CreatePiece::route('/create'),
+            'edit' => PieceResource\Pages\EditPiece::route('/{record}/edit'),
         ];
     }
 }
