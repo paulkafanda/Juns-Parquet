@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Clusters\DossierCluster\Resources;
 
 use App\Enums\FolderState;
 use App\Enums\UserRole;
 use App\Filament\Clusters\DossierCluster;
 use App\Filament\Resources\DossierResource\Pages;
 use App\Filament\Resources\DossierResource\RelationManagers;
-use App\Filament\Resources\PieceResource\Pages\CreatePiece;
 use App\Models\Dossier;
 use App\Models\Piece;
-use Filament\Actions\CreateAction;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -32,32 +30,19 @@ class DossierResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\DatePicker::make('date_ouverture')
-                    ->default(now())
-                    ->hidden()
-                    ->required(),
-                Forms\Components\TextInput::make('nom')
-                    ->required(),
-                Forms\Components\Select::make('suite_reservee')
-                    ->enum(FolderState::class)
-                    ->options(FolderState::class)
-                    ->default(FolderState::EN_COURS),
-                Forms\Components\DatePicker::make('date_fixation')
-                    ->nullable(),
-                Forms\Components\DatePicker::make('date_classement')
-                    ->nullable(),
-                Forms\Components\Select::make('plainte_id')
-                    ->relationship('plainte', 'motif', fn($query) => $query->where('magistrat_id', auth()->id()))
-                    ->required(),
-            ]);
+            ->schema(Dossier::getForm());
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('plainte.motif'),
+                Tables\Columns\TextColumn::make('plainte.motif')
+                ->wrap(),
+                Tables\Columns\TextColumn::make('plainte.plaignant.prenom')
+                ->wrap(),
+                Tables\Columns\TextColumn::make('plainte.accusee.prenom')
+                ->wrap(),
                 Tables\Columns\TextColumn::make('suite_reservee')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -77,9 +62,11 @@ class DossierResource extends Resource
                     ->icon('heroicon-o-paper-clip')
                     ->fillForm(fn(Dossier $record) => ['dossier_id' => $record->id ])
                     ->action(function (array $data, Dossier $record) {
+
+                        $data['dossier_id'] = $record->id;
                         $piece = Piece::create($data);
-                        $piece->dossier()->associate($record->id);
                         $piece->save();
+
                     })
                     ->label('')
                     ->modal()
@@ -87,15 +74,12 @@ class DossierResource extends Resource
                     ->form(
                         [
                             Forms\Components\Group::make([
-                                TextInput::make('dossier_id')
-                                    ->required()
-                                ,
                                 TextInput::make('type')
                                     ->required(),
+                                DatePicker::make('date')
+                                    ->default(now())
+                                    ->required(),
                             ])->columns(2),
-                            DatePicker::make('date')
-                                ->default(now())
-                                ->required(),
                             TextInput::make('description')
                                 ->required(),
                             FileUpload::make('path')
@@ -104,8 +88,9 @@ class DossierResource extends Resource
                         ]
                     )
                     ->model(Piece::class)
-                    ->color('success')
+                    ->color('info')
                     ->tooltip("Ajouter une piece")
+                    ->sendSuccessNotification()
                 ->visible(auth()->user()->isMagistrat()),
                 Tables\Actions\Action::make('Fixer dossier')
                     ->icon('heroicon-o-bookmark')
@@ -126,12 +111,14 @@ class DossierResource extends Resource
                         $dossier->save();
                     })
                     ->label('')
-                    ->color('info')
+                    ->color('warning')
                     ->tooltip("Classer le dosser")
                 ->visible(auth()->user()->isMagistrat()),
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make()
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make()
+                    ->slideOver(),
+                    Tables\Actions\DeleteAction::make(),
                 ])
             ])
             ->bulkActions([
@@ -144,16 +131,17 @@ class DossierResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            DossierCluster\Resources\DossierResource\RelationManagers\PiecesRelationManager::class
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDossiers::route('/'),
-            'create' => Pages\CreateDossier::route('/create'),
-            'edit' => Pages\EditDossier::route('/{record}/edit'),
+            'index' => DossierResource\Pages\ListDossiers::route('/'),
+//            'create' => Pages\CreateDossier::route('/create'),
+//            'edit' => Pages\EditDossier::route('/{record}/edit'),
+            'view' => DossierCluster\Resources\DossierResource\Pages\ViewDossier::route('/{record}'),
         ];
     }
 

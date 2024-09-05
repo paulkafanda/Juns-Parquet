@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\PieceResource\Pages;
+namespace App\Filament\Clusters\DossierCluster\Resources\PieceResource\Pages;
 
-use App\Filament\Resources\PieceResource;
+use App\Filament\Clusters\DossierCluster\Resources\PieceResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 

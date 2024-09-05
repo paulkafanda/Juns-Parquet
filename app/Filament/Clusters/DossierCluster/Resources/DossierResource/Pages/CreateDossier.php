@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\DossierResource\Pages;
+namespace App\Filament\Clusters\DossierCluster\Resources\DossierResource\Pages;
 
-use App\Filament\Resources\DossierResource;
-use Filament\Actions;
+use App\Filament\Clusters\DossierCluster\Resources\DossierResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateDossier extends CreateRecord

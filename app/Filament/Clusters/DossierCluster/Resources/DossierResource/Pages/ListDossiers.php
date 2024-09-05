@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filament\Resources\DossierResource\Pages;
+namespace App\Filament\Clusters\DossierCluster\Resources\DossierResource\Pages;
 
 use App\Enums\FolderState;
 use App\Enums\UserRole;
-use App\Filament\Resources\DossierResource;
+use App\Filament\Clusters\DossierCluster\Resources\DossierResource;
 use App\Models\Dossier;
 use Filament\Actions;
 use Filament\Resources\Components\Tab;
@@ -51,7 +51,7 @@ class ListDossiers extends ListRecords
                         ->whereRelation('plainte', 'magistrat_id', $user->id)
                     )
                     ->badge($unfixed_folder)
-                    ->badgeColor('warning'),
+                    ->badgeColor('success'),
                 'Non Classes' => Tab::make()
                     ->modifyQueryUsing(fn(Builder $query) => $query
                         ->whereNot('suite_reservee', '=', FolderState::CLASSE))
