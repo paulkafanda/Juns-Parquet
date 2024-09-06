@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use phpDocumentor\Reflection\Types\This;
 
 class PlainteResource extends Resource
@@ -86,5 +87,14 @@ class PlainteResource extends Resource
     public static function getNavigationBadgeColor(): string|array|null
     {
         return 'danger';
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return match (auth()->user()->isMagistrat()) {
+            true => parent::getEloquentQuery()
+            ->where('magistrat_id', auth()->id()),
+            default => parent::getEloquentQuery()
+        };
     }
 }

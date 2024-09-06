@@ -1,8 +1,7 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace App\Policies;
 
-use App\Models\Partie;
 use App\Models\User;
 
 class PartiePolicy

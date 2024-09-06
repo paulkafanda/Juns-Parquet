@@ -7,7 +7,7 @@ use App\Models\User;
 
 class DossierPolicy
 {
-    public function viewAny(User $user): bool
+    public function viewAny(): bool
 
     {
         return true;
@@ -18,7 +18,7 @@ class DossierPolicy
         return $user->isMagistrat();
     }
 
-    public function edit(User $user, Dossier $dossier): bool
+    public function edit(User $user): bool
     {
         return $user->isMagistrat();
     }
