@@ -21,10 +21,6 @@ use Illuminate\Notifications\Notifiable;
 
 /**
  * @property UserRole|mixed $role
- * @property UserRole|mixed $role
- * @property UserRole|mixed $role
- * @property UserRole|mixed $role
- * @property UserRole|mixed $role
  */
 class User extends Authenticatable
 {
