@@ -1,4 +1,11 @@
-<?php
+<?php /** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+/** @noinspection ALL */
+
+/** @noinspection ALL */
 
 namespace App\Models;
 
@@ -12,6 +19,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property UserRole|mixed $role
+ * @property UserRole|mixed $role
+ * @property UserRole|mixed $role
+ * @property UserRole|mixed $role
+ * @property UserRole|mixed $role
+ */
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;

@@ -12,7 +12,7 @@ class PiecePolicy
         return $user->isMagistrat();
     }
 
-    public function delete(User $user, Piece $piece): bool
+    public function delete(User $user): bool
     {
         return $user->isMagistrat();
     }
