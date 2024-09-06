@@ -9,12 +9,14 @@ use App\Filament\Resources\DossierResource\Pages;
 use App\Filament\Resources\DossierResource\RelationManagers;
 use App\Models\Dossier;
 use App\Models\Piece;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -44,6 +46,12 @@ class DossierResource extends Resource
                 Tables\Columns\TextColumn::make('plainte.accusee.prenom')
                 ->wrap(),
                 Tables\Columns\TextColumn::make('suite_reservee')
+                    ->badge()
+                    ->color(fn($state) => match ($state) {
+                        FolderState::FIXE => 'success',
+                        FolderState::CLASSE => 'warning',
+                        default => 'danger'
+                    })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -67,6 +75,12 @@ class DossierResource extends Resource
                         $piece = Piece::create($data);
                         $piece->save();
 
+
+                        Notification::make('Piece ajoutee')
+                            ->success()
+                            ->title("Piece ajoutee")
+                            ->body('La piece a ete correctement ajoutee')
+                        ->send();
                     })
                     ->label('')
                     ->modal()
@@ -90,7 +104,6 @@ class DossierResource extends Resource
                     ->model(Piece::class)
                     ->color('info')
                     ->tooltip("Ajouter une piece")
-                    ->sendSuccessNotification()
                 ->visible(auth()->user()->isMagistrat()),
                 Tables\Actions\Action::make('Fixer dossier')
                     ->icon('heroicon-o-bookmark')
@@ -98,6 +111,16 @@ class DossierResource extends Resource
                         $dossier->date_fixation = now();
                         $dossier->suite_reservee = FolderState::FIXE;
                         $dossier->save();
+
+
+                        Notification::make('Dossier Fixe')
+                            ->success()
+                            ->title("Dossier Fixe")
+                            ->body('Le dossier a ete fixe')
+                            ->color('success')
+                            ->icon('heroicon-o-paper-clip')
+                            ->iconColor('success')
+                            ->send();
                     })
                     ->label('')
                     ->color('success')
@@ -109,6 +132,15 @@ class DossierResource extends Resource
                         $dossier->date_classement = now();
                         $dossier->suite_reservee = FolderState::CLASSE;
                         $dossier->save();
+
+                        Notification::make('Dossier classe')
+                            ->success()
+                            ->title("Dossier classe")
+                            ->body('Le dossier a ete classe')
+                            ->color('warning')
+                            ->icon('heroicon-o-folder')
+                            ->iconColor('warning')
+                            ->send();
                     })
                     ->label('')
                     ->color('warning')
