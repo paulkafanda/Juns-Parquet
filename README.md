@@ -1,66 +1,127 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Gestion des Plaintes du Parquet
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Cette application Laravel permet de gérer les plaintes au sein d'un parquet, y compris la gestion des dossiers, audiences, jugements, et pièces justificatives.
 
-## About Laravel
+## Fonctionnalités
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Gestion des plaintes** : Créez, modifiez, et supprimez des plaintes. Les plaintes peuvent être associées à un plaignant et un accusé.
+- **Gestion des parties** : Enregistrez les informations des plaignants et des accusés.
+- **Gestion des dossiers** : Suivez l'évolution des plaintes à travers des dossiers. Chaque dossier peut inclure des audiences, des jugements et des pièces justificatives.
+- **Gestion des audiences** : Planifiez et enregistrez les audiences associées à un dossier.
+- **Gestion des jugements** : Enregistrez les jugements pour chaque dossier, incluant la décision prise par le tribunal.
+- **Gestion des pièces justificatives** : Ajoutez des documents liés aux dossiers pour servir de preuves ou de documents de support.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Modèles de base de données
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Les principales tables utilisées dans l'application incluent :
 
-## Learning Laravel
+- `users` : Contient les informations des utilisateurs du système (magistrats, secrétaires, etc.)
+- `parties` : Contient les informations des plaignants et des accusés.
+- `plaintes` : Stocke les plaintes avec des références aux parties impliquées.
+- `dossiers` : Gère les dossiers associés aux plaintes.
+- `audiences` : Gère les audiences planifiées dans le cadre d'un dossier.
+- `jugements` : Contient les jugements rendus pour les dossiers.
+- `pieces` : Gère les pièces justificatives associées à un dossier.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Installation
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. Clonez le dépôt sur votre machine locale :
+   ```bash
+   git clone https://github.com/votre-utilisateur/gestion-plaintes-parquet.git
+   ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. Installez les dépendances PHP :
+   ```bash
+   cd gestion-plaintes-parquet
+   composer install
+   ```
 
-## Laravel Sponsors
+3. Copiez le fichier `.env.example` et renommez-le en `.env`, puis configurez vos informations de base de données et autres configurations :
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+   ```bash
+   cp .env.example .env
+   ```
 
-### Premium Partners
+4. Générez la clé d'application :
+   ```bash
+   php artisan key:generate
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+5. Exécutez les migrations de la base de données :
+   ```bash
+   php artisan migrate
+   ```
 
-## Contributing
+6. Lancez le serveur de développement :
+   ```bash
+   php artisan serve
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+L'application sera disponible à l'adresse `http://localhost:8000`.
 
-## Code of Conduct
+## Modèles de données
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### `users`
 
-## Security Vulnerabilities
+| Colonne         | Type     | Description                                   |
+|-----------------|----------|-----------------------------------------------|
+| id              | integer  | Identifiant unique de l'utilisateur           |
+| name            | varchar  | Nom de l'utilisateur                          |
+| email           | varchar  | Email de l'utilisateur                        |
+| role            | varchar  | Rôle de l'utilisateur (magistrat, secrétaire) |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### `plaintes`
+
+| Colonne        | Type     | Description                                  |
+|----------------|----------|----------------------------------------------|
+| id             | integer  | Identifiant unique de la plainte             |
+| motif          | varchar  | Motif de la plainte                          |
+| plaignant_id   | integer  | Référence à l'identifiant du plaignant       |
+| accusee_id     | integer  | Référence à l'identifiant de l'accusé        |
+| magistrat_id   | integer  | Référence à l'utilisateur (magistrat)        |
+
+### `dossiers`
+
+| Colonne         | Type     | Description                                  |
+|-----------------|----------|----------------------------------------------|
+| id              | integer  | Identifiant unique du dossier                |
+| nom             | varchar  | Nom du dossier                               |
+| date_ouverture  | date     | Date d'ouverture du dossier                  |
+| plainte_id      | integer  | Référence à l'identifiant de la plainte      |
+
+### `audiences`
+
+| Colonne     | Type     | Description                                  |
+|-------------|----------|----------------------------------------------|
+| id          | integer  | Identifiant unique de l'audience             |
+| date        | datetime | Date de l'audience                           |
+| lieu        | varchar  | Lieu de l'audience                           |
+| statut      | varchar  | Statut de l'audience (programmée, renvoyée)  |
+
+### `jugements`
+
+| Colonne     | Type     | Description                                  |
+|-------------|----------|----------------------------------------------|
+| id          | integer  | Identifiant unique du jugement               |
+| date        | datetime | Date du jugement                             |
+| description | varchar  | Description du jugement                      |
+| statut      | varchar  | Statut du jugement (conclue, en cours)       |
+
+## Tests
+
+Pour exécuter les tests, utilisez la commande suivante :
+
+```bash
+php artisan test
+```
+
+## Contributions
+
+Les contributions sont les bienvenues. Veuillez soumettre vos propositions via des pull requests.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Cette application est sous licence MIT. Consultez le fichier [LICENSE](LICENSE) pour plus d'informations.
+```
+
+Ce fichier `README.md` présente les principales fonctionnalités de l'application, la structure de la base de données, ainsi que les instructions d'installation et d'utilisation.
