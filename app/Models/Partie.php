@@ -1,13 +1,4 @@
 <?php /** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-
-/** @noinspection ALL */
 
 namespace App\Models;
 
@@ -16,6 +7,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Partie extends Model
 {
@@ -70,5 +63,19 @@ class Partie extends Model
             TextInput::make('origine')
                 ->nullable(),
         ];
+    }
+
+    public function plaintes(): HasMany
+    {
+        return $this->hasMany(Plainte::class);
+    }
+
+    public function partieAsPlaignants(): HasMany
+    {
+        return $this->hasMany(Plainte::class, 'plaignant_id');
+    }
+    public function partieAsAccuse(): HasMany
+    {
+        return $this->hasMany(Plainte::class, 'accusee_id');
     }
 }
